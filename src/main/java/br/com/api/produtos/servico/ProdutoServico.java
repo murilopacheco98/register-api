@@ -19,7 +19,8 @@ public class ProdutoServico {
   private RespostaModelo respostaModelo;
 
   public Iterable<ProdutoModelo> listar() {
-    return produtoRepositorio.findAll();
+    // return produtoRepositorio.findAll();
+    return produtoRepositorio.OrderByCodigoAsc();
   }
 
   public ResponseEntity<?> cadastrar(ProdutoModelo produtoModelo) {
@@ -36,7 +37,6 @@ public class ProdutoServico {
   }
 
   public ResponseEntity<?> alterar(ProdutoModelo produtoModelo) {
-
     if (produtoModelo.getNome().equals("")) {
       respostaModelo.setMensagem("O nome do produto é obrigatório!");
       return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
@@ -44,8 +44,8 @@ public class ProdutoServico {
       respostaModelo.setMensagem("O nome da marca é obrigatório!");
       return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
     } 
-
-    return new ResponseEntity<ProdutoModelo>(produtoRepositorio.save(produtoModelo), HttpStatus.OK);
+    produtoRepositorio.save(produtoModelo);
+    return new ResponseEntity<>(produtoRepositorio, HttpStatus.OK);
   }
 
   public ResponseEntity<RespostaModelo> remover(long codigo) {
